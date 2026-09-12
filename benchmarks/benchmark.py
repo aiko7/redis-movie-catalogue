@@ -20,11 +20,7 @@ RESULTS_DIR = ROOT / "benchmarks" / "results"
 
 
 def iterate_movies(r, batch_size=1000):
-    """
-    Iterate over every movie record in Redis.
 
-    This deliberately ignores all secondary indexes.
-    """
     cursor = 0
 
     while True:
@@ -45,18 +41,7 @@ def iterate_movies(r, batch_size=1000):
             break
 
 
-# ---------------------------------------------------------
-# Full-scan implementations
-# ---------------------------------------------------------
-
 def full_scan_get_by_id(r, imdb_id):
-    """
-    Scan the ENTIRE collection.
-
-    We deliberately do not stop when the movie is found,
-    because Redis SCAN order is unspecified. This makes
-    measurements comparable across runs and dataset sizes.
-    """
     result = None
 
     for movie in iterate_movies(r):
@@ -97,11 +82,6 @@ def full_scan_genre_and_year(r, genre, year):
 
     return results
 
-
-# ---------------------------------------------------------
-# Timing
-# ---------------------------------------------------------
-
 def result_count(result):
     if isinstance(result, list):
         return len(result)
@@ -110,9 +90,7 @@ def result_count(result):
 
 
 def measure(function, repeats=5, warmup=True):
-    """
-    Run one unmeasured warm-up followed by measured runs.
-    """
+    #Warmup cause of caching
 
     if warmup:
         function()
@@ -239,9 +217,7 @@ def benchmark(
             test["full_scan"],
             repeats=repeats,
         )
-
-        # Sanity check: both implementations should
-        # return the same number of movies.
+        #make sure
         if (
             indexed["result_count"]
             != scan["result_count"]

@@ -86,10 +86,6 @@ def create_summary(df):
 
 
 def print_speedup_table(df):
-    """
-    Print one compact table showing indexed vs full-scan
-    median times and the resulting speedup.
-    """
 
     indexed = df[
         df["method"] == "indexed"
@@ -176,19 +172,6 @@ def print_speedup_table(df):
 
 
 def plot_query_performance(df):
-    """
-    Create one graph per query.
-
-    X-axis:
-        number of movies
-
-    Y-axis:
-        median query time in milliseconds
-
-    The Y-axis is logarithmic because indexed and
-    full-scan times can differ by several orders
-    of magnitude.
-    """
 
     queries = sorted(
         df["query"].unique()
@@ -267,10 +250,6 @@ def plot_query_performance(df):
 
 
 def plot_speedup(df):
-    """
-    Create one plot showing how much faster the indexed
-    implementation is than the full scan for each query.
-    """
 
     indexed = df[
         df["method"] == "indexed"
