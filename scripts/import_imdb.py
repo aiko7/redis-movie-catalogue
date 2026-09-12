@@ -257,6 +257,8 @@ def main():
     print("Writing data to Redis...")
     write_to_redis(movies, r)
 
+    r.set("meta:movie_count", len(movies))
+
     print()
     print("Import complete")
     print(f"Movies imported: {len(movies):,}")
